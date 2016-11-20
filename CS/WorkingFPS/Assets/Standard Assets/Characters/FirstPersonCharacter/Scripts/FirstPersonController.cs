@@ -161,19 +161,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void UpdateCameraPosition(float speed)
         {
 
-            float crouchAmount = 0;
+            bool crouch = false;
 
             Vector3 newCameraPosition = Vector3.zero;
             
 
-            crouchAmount = Input.GetAxisRaw("Crouch");
-            if (crouchAmount > 0)
+            crouch = CrossPlatformInputManager.GetButtonDown("Crouch");
+            if (crouch)
             {
-                if (crouchAmount > 1)
-                    crouchAmount = 1;
-
                 m_isCrouching = true;
-
             }
             else
                 m_isCrouching = false;
@@ -204,7 +200,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                       (speed*(m_IsWalking ? 1f : m_RunstepLenghten)));
                
                 newCameraPosition = m_Camera.transform.localPosition;
-                newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset() - crouchAmount;
+                newCameraPosition.y = m_Camera.transform.localPosition.y - m_JumpBob.Offset() - 1.0f;
             }
             else
             {
@@ -221,13 +217,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
             float vertical = CrossPlatformInputManager.GetAxis("Vertical");
 
-            bool waswalking = m_IsWalking;
-
-#if !MOBILE_INPUT
-            // On standalone builds, walk/run speed is modified by a key press.
-            // keep track of whether or not the character is walking or running
             m_IsWalking = Input.GetKey(KeyCode.LeftShift);
-#endif
+
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
             m_Input = new Vector2(horizontal, vertical);

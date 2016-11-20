@@ -48,9 +48,13 @@ Temporary Items
 
 
 # Custom Ignores
-$PROJDIR/Temp
-$PROJDIR/Library
-$PROJDIR/Obj
+**/[Ll]ibrary/*
+**/[Tt]emp/*
+**/[Oo]bj/*
+**/[Bb]uild/*
+**/[Bb]uilds/*
+**/UnityGenerated/*
+**/Assets/AssetStoreTools*
 *.csproj
 *.unityproj
 *.sln
