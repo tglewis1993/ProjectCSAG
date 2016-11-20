@@ -97,6 +97,10 @@
       <Project>{68A38537-153D-78EB-4DE1-5ED2D6BD4EFB}</Project>
       <Name>WorkingFPS.CSharp.Plugins</Name>
     </ProjectReference>
+    <ProjectReference Include="WorkingFPS.CSharp.csproj">
+      <Project>{AAE28237-4183-4C80-4D22-EBA725222130}</Project>
+      <Name>WorkingFPS.CSharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
