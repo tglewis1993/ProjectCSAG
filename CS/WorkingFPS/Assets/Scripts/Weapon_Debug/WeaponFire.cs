@@ -8,12 +8,13 @@ public class WeaponFire : MonoBehaviour {
     {
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
-
-
-        positionUpdate();
         updateRay();
-        fireRate = 0;
-        inacc = 0.0f; 
+
+        canFire = 0;
+        inacc = 0.12993f;
+        fireRate = 12.0f;
+
+
     }
 	
 	// Update is called once per frame
@@ -33,40 +34,40 @@ public class WeaponFire : MonoBehaviour {
     {
         positionUpdate();
 
-        playerViewDir.x += Random.value * inacc;
-        playerViewDir.y += Random.value * inacc;
-        playerViewDir.z += Random.value * inacc;
-
-
         bulletPath.origin = playerPosition;
+
+        playerViewDir.x += Random.Range(-1.0f, 1.0f) * inacc;
+        playerViewDir.y += Random.Range(-1.0f, 1.0f) * inacc;
+        playerViewDir.z += Random.Range(-1.0f, 1.0f) * inacc;
+
         bulletPath.direction = playerViewDir;
+
     }
 
     void fire()
     {
 
-        if (fireRate < 0)
-            fireRate = 0;
+        updateRay(); // update the ray's path by updating the references to players position. 
+
+        if (canFire < 0)
+            canFire = 0;
         else
-            fireRate = fireRate - 1;
+            canFire = canFire - 1;
 
-        m_mouseClick = Input.GetAxisRaw("Fire1");
+        m_mouseClick = Input.GetAxisRaw("Fire1"); // Get mouse click. When mouse is clicked m_mouseClick == 1;
 
-        if(m_mouseClick>0)
+        if(m_mouseClick>0) // Don't fire if mouse isn't clicked.
         {
-            if (fireRate == 0)
-                fireRate = 15.0f;
-            else return;
-
-            updateRay();
+            if (canFire == 0) // Controls time between shots. The larger fire rate is the longer the time between shots.
+                canFire = fireRate;
+            else return; // Don't fire at all between shots. 
 
             Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 3);
 
-            //Debug.DrawRay(bulletPath.origin, bulletPath.direction, Color.blue, 3.0f);
-            if (Physics.Raycast(bulletPath, out shotHitInfo))
+            if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
             {
-                Debug.Log(shotHitInfo.transform.name);
 
+                Debug.Log(shotHitInfo.transform.name);
 
             }
         }
@@ -80,6 +81,8 @@ public class WeaponFire : MonoBehaviour {
     Vector3 playerPosition;
     Vector3 playerViewDir;
 
+
     float inacc;
-    static float fireRate;
+    static float canFire;
+    float fireRate;
 }
