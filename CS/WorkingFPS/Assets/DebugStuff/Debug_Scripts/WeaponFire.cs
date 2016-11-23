@@ -110,7 +110,7 @@ public class WeaponFire : MonoBehaviour {
             else
                 canReload = canReload - 1;
 
-            if (!m_ReloadPressed)
+            if (!m_ReloadPressed && !m_mouseClick)
             {
 
                 m_ReloadPressed = Input.GetButtonDown("Reload");
@@ -132,6 +132,16 @@ public class WeaponFire : MonoBehaviour {
 
     }
 
+
+    public int getBulletCount()
+    {
+        return bulletCount;
+    }
+
+    public int getFullMagSize()
+    {
+        return magSize;
+    }
 
     Camera PlayerView;
 

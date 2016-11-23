@@ -18,16 +18,8 @@ public class ThrowThing : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //if (Input.GetButtonDown("Fire2"))
-        //{
-
-
-            if(Input.GetButtonUp("Fire2"))
+        if(Input.GetButtonUp("Fire2"))
                 throwThing();
-
-
-        //}
-           
 
 	}
 
@@ -36,6 +28,7 @@ public class ThrowThing : MonoBehaviour {
         GameObject thing = (GameObject)Instantiate(thingPrefab, myTran.TransformPoint(-0.2f, 0, 0.5f), myTran.rotation);
 
         thing.GetComponent<Rigidbody>().AddForce(myTran.forward * throwForce, ForceMode.Impulse);
+
 
     }
 }
