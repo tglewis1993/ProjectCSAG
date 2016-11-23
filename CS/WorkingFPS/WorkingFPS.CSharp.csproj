@@ -72,6 +72,7 @@
     <Compile Include="Assets\Scripts\Manager Scripts\GameManager_ToggleMenu.cs" />
     <Compile Include="Assets\Scripts\Manager Scripts\GameManager_TogglePause.cs" />
     <Compile Include="Assets\Scripts\Masters\GameManager_Master.cs" />
+    <Compile Include="Assets\Scripts\Weapon_Debug\ThrowThing.cs" />
     <Compile Include="Assets\Scripts\Weapon_Debug\WeaponFire.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
