@@ -8,11 +8,12 @@ public class WeaponFire : MonoBehaviour {
     {
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
-        updateRay();
+
+        positionUpdate();
 
         canFire = 0;
         inacc = 0.12993f;
-        fireRate = 12.0f;
+        fireRate = 20.0f;
 
 
     }
@@ -20,6 +21,7 @@ public class WeaponFire : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
+        positionUpdate();
         fire();
         
 	}
@@ -62,11 +64,11 @@ public class WeaponFire : MonoBehaviour {
                 canFire = fireRate;
             else return; // Don't fire at all between shots. 
 
-            Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 3);
+            
 
             if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
             {
-
+                Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 3);
                 Debug.Log(shotHitInfo.transform.name);
 
             }
