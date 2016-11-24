@@ -26,7 +26,7 @@ public class WeaponFire : MonoBehaviour {
 
         canFire = 0;
         canReload = 0;
-        inacc = 0.12993f;
+        inacc = 0.048833f;
         fireDelay = 20.0f;
         reloadDelay = 200.0f;
 
@@ -86,13 +86,10 @@ public class WeaponFire : MonoBehaviour {
                 bulletCount--;
                 if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
                 {
+                    //HIT DETECTED, use shotHitInfo to get information on the object hit. 
 
-                    
-                    Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 3);
+                    Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 1);
                     Debug.Log(shotHitInfo.transform.tag);
-
-                    
-
                 }
             }
 
@@ -151,8 +148,6 @@ public class WeaponFire : MonoBehaviour {
     RaycastHit shotHitInfo;
     Vector3 playerPosition;
     Vector3 playerViewDir;
-
-    
 
     float inacc;
     static float canFire;

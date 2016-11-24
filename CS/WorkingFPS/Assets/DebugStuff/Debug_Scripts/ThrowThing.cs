@@ -4,14 +4,17 @@ using System.Collections;
 public class ThrowThing : MonoBehaviour {
 
     public GameObject thingPrefab;
+    public float thingLifetime = 15.0f;
     private Transform myTran;
+
+    
 
     public float throwForce = 50.0f;
 	// Use this for initialization
 	void Start () {
 
         myTran = transform;
-
+        
 
 	}
 	
@@ -29,6 +32,13 @@ public class ThrowThing : MonoBehaviour {
 
         thing.GetComponent<Rigidbody>().AddForce(myTran.forward * throwForce, ForceMode.Impulse);
 
+        StartCoroutine(Despawn(thing, 3.0f));
 
+    }
+
+    IEnumerator Despawn(GameObject go, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Destroy(go);
     }
 }
