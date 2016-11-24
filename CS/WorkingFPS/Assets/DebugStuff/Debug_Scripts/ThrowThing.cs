@@ -18,7 +18,7 @@ public class ThrowThing : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if(Input.GetButtonUp("Fire2"))
+        if(Input.GetButtonUp("Fire2") && !Input.GetButton("Fire1")) // Will throw when right click is released and when fire isn't held.
                 throwThing();
 
 	}
