@@ -24,7 +24,11 @@ namespace GameManager_Master
 
         void Start () {
             Application.targetFrameRate = 289;
-	    }
+            bMenuOn = false;
+            bInvUIOn = false;
+            bGameOver = false;
+
+        }
 	
 
 	    void Update () {

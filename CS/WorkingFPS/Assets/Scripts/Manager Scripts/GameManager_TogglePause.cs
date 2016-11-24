@@ -17,8 +17,6 @@ public class GameManager_TogglePause : MonoBehaviour {
     {
         Gmaster.ev_menuToggle -= TogglePause;
         Gmaster.ev_invUIToggle -= TogglePause;
-
-
     }
 
     void SetInitRefs()
@@ -30,15 +28,15 @@ public class GameManager_TogglePause : MonoBehaviour {
 
     void TogglePause()
     {
-        if(bPaused)
+        if(!bPaused)
         {
             Time.timeScale = 1;
-            bPaused = false;
+            bPaused = true;
         }
         else
         {
             Time.timeScale = 0;
-            bPaused = true;
+            bPaused = false;
         }
 
     }
