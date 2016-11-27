@@ -5,8 +5,9 @@ public class GameManager_ToggleMenu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        ToggleMenu();
-	}
+        Menu.SetActive(false);
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -30,7 +31,7 @@ public class GameManager_ToggleMenu : MonoBehaviour {
     void SetInitRefs()
     {
         Gmaster = GetComponent<GameManager_Master.GameManager_Master>();
-
+        
     }
 
     void CheckForMenuToggleRequest()

@@ -14,6 +14,7 @@ public class WeaponFire : MonoBehaviour {
 	void Start ()
     {
         PlayerView = GetComponentInParent<Camera>();
+        gm_tp = GameObject.Find("GameManager").GetComponent<GameManager_TogglePause>();
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
@@ -35,13 +36,26 @@ public class WeaponFire : MonoBehaviour {
 
         bulletCount = magSize;
 
+        
+
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        fire();
-        printDebugInfo();
+        if (!gm_tp.bPaused)
+        {
+
+
+
+            checkForFiring();
+
+
+
+        }
+
+
+        //printDebugInfo();
         
 
 	}
@@ -66,7 +80,7 @@ public class WeaponFire : MonoBehaviour {
 
     }
 
-    void fire()
+    void checkForFiring()
     {
 
         updateRay(); // update the ray's path by updating the references to players position. 
@@ -78,7 +92,7 @@ public class WeaponFire : MonoBehaviour {
 
         m_mouseClick = Input.GetButton("Fire1"); // Get mouse click. When mouse is clicked m_mouseClick == 1;
 
-        if(m_mouseClick) // Don't fire if mouse isn't clicked.
+        if(m_mouseClick && !m_ReloadPressed) // Don't fire if mouse isn't clicked or reloading.
         {
             if (canFire == 0 && bulletCount > 0) // Controls time between shots. The larger fire delay is the longer the time between shots.
             {
@@ -94,11 +108,11 @@ public class WeaponFire : MonoBehaviour {
             }
 
         }
-        Reload();
+        checkForReload();
 
     }
 
-    void Reload()
+    void checkForReload()
     {
         if (bulletCount != magSize) // Don't reload if at full ammo
         {
@@ -158,5 +172,7 @@ public class WeaponFire : MonoBehaviour {
 
     static float canReload;
     float reloadDelay; // Time between start of reload and end of reload.
+
+    GameManager_TogglePause gm_tp;
     
 }

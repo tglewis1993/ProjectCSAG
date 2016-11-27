@@ -7,23 +7,25 @@ public class ThrowThing : MonoBehaviour {
     public float thingLifetime = 15.0f;
     private Transform myTran;
 
-    
+    GameManager_TogglePause gm_tp;
+
 
     public float throwForce = 50.0f;
 	// Use this for initialization
 	void Start () {
 
         myTran = transform;
-        
+        gm_tp = GameObject.Find("GameManager").GetComponent<GameManager_TogglePause>();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-        if(Input.GetButtonUp("Fire2") && !Input.GetButton("Fire1")) // Will throw when right click is released and when fire isn't held.
+        if (!gm_tp.bPaused)
+        {
+            if (Input.GetButtonUp("Fire2") && !Input.GetButton("Fire1")) // Will throw when right click is released and when fire isn't held.
                 throwThing();
-
+        }
 	}
 
     void throwThing()

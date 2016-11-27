@@ -30,12 +30,12 @@ public class GameManager_TogglePause : MonoBehaviour {
     {
         if(!bPaused)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 0;
             bPaused = true;
         }
         else
         {
-            Time.timeScale = 0;
+            Time.timeScale = 1;
             bPaused = false;
         }
 
@@ -43,5 +43,5 @@ public class GameManager_TogglePause : MonoBehaviour {
 
     GameManager_Master.GameManager_Master Gmaster;
 
-    bool bPaused;
+    public bool bPaused;
 }
