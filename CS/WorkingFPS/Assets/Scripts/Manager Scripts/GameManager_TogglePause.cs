@@ -43,5 +43,5 @@ public class GameManager_TogglePause : MonoBehaviour {
 
     GameManager_Master.GameManager_Master Gmaster;
 
-    public bool bPaused;
+    bool bPaused;
 }

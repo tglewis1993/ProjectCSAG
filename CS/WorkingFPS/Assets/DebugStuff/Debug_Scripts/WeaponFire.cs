@@ -14,7 +14,6 @@ public class WeaponFire : MonoBehaviour {
 	void Start ()
     {
         PlayerView = GetComponentInParent<Camera>();
-        gm_tp = GameObject.Find("GameManager").GetComponent<GameManager_TogglePause>();
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
@@ -43,17 +42,9 @@ public class WeaponFire : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (!gm_tp.bPaused)
-        {
 
 
-
-            checkForFiring();
-
-
-
-        }
-
+        //checkForFiring();
 
         //printDebugInfo();
         
@@ -80,7 +71,7 @@ public class WeaponFire : MonoBehaviour {
 
     }
 
-    void checkForFiring()
+    public void checkForFiring()
     {
 
         updateRay(); // update the ray's path by updating the references to players position. 
@@ -173,6 +164,5 @@ public class WeaponFire : MonoBehaviour {
     static float canReload;
     float reloadDelay; // Time between start of reload and end of reload.
 
-    GameManager_TogglePause gm_tp;
     
 }

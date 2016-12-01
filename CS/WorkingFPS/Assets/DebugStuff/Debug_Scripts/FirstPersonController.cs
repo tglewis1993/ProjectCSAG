@@ -28,8 +28,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
         [SerializeField] private AudioClip m_LandSound;           // the sound played when character touches back on ground.
 
-
-        GameManager_TogglePause pauseTrack;
+        public WeaponFire playersWeapon;
+        public ThrowThing playersGrenade;
 
         private Camera m_Camera;
         private bool m_Jump;
@@ -48,7 +48,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Use this for initialization
         private void Start()
         {
-            pauseTrack = GameObject.Find("GameManager").GetComponent<GameManager_TogglePause>();
+
 
             m_CharacterController = GetComponent<CharacterController>();
             m_Camera = Camera.main;
@@ -70,8 +70,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
-            if (!pauseTrack.bPaused)
-            {
+
                 RotateView();
                 // the jump state needs to read here to make sure it is not missed
                 if (!m_Jump && m_CharacterController.isGrounded)
@@ -92,7 +91,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 }
 
                 m_PreviouslyGrounded = m_CharacterController.isGrounded;
-            }
+
+            playersWeapon.checkForFiring();
+            playersGrenade.throwThing();
+            
         }
 
 
@@ -106,9 +108,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            if (!pauseTrack.bPaused)
-            {
-
                 float speed;
                 GetInput(out speed);
                 // always move along the camera forward as it is the direction that it being aimed at
@@ -146,7 +145,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 UpdateCameraPosition(speed);
 
                 m_MouseLook.UpdateCursorLock();
-            }
         }
 
 
