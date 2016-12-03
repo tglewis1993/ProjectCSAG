@@ -17,7 +17,7 @@ public class WeaponFire : MonoBehaviour {
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
-
+        bulletPath = new Ray();
         updateRay();
 
         reloadDelay = 0;
@@ -68,14 +68,14 @@ public class WeaponFire : MonoBehaviour {
         playerViewDir.z += Random.Range(-1.0f, 1.0f) * inacc;
 
         bulletPath.direction = playerViewDir;
-
+        beam.getRay();
     }
 
     public void checkForFiring()
     {
 
         updateRay(); // update the ray's path by updating the references to players position. 
-
+        
         if (canFire < 0)
             canFire = 0;
         else
@@ -89,12 +89,19 @@ public class WeaponFire : MonoBehaviour {
             {
                 canFire = fireDelay;
                 bulletCount--;
+
+
+
                 if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
                 {
                     //HIT DETECTED, use shotHitInfo to get information on the object hit. 
-
+                    beam.processBeam(true);
                     Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 1);
                     Debug.Log(shotHitInfo.transform.tag);
+                }
+                else
+                {
+                    beam.processBeam(false);
                 }
             }
 
@@ -145,7 +152,18 @@ public class WeaponFire : MonoBehaviour {
         return magSize;
     }
 
+    public Ray getRayPath()
+    {
+        return bulletPath;
+    }
+    public RaycastHit getHitInfo()
+    {
+        return shotHitInfo;
+    }
+
     Camera PlayerView;
+
+    public Beam_Effect beam;
 
     Ray bulletPath;
     bool m_mouseClick;
