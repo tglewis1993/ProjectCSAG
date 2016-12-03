@@ -11,6 +11,7 @@ public class UiText : MonoBehaviour {
     Text ArmorString;
 
     PlayerStats playerStats;
+    public GameObject weaponReference;
     WeaponFire weaponStats;
 
     // Use this for initialization
@@ -21,7 +22,9 @@ public class UiText : MonoBehaviour {
         ArmorString = GameObject.Find("Armor_Text").GetComponent<Text>();
 
         playerStats = GameObject.Find("Debug_Character").GetComponent<PlayerStats>();
-        weaponStats = GameObject.Find("DebugGun").GetComponent<WeaponFire>();
+
+        weaponStats = weaponReference.GetComponent<WeaponFire>();
+        
 
     }
 	

@@ -13,7 +13,7 @@ public class WeaponFire : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        PlayerView = GetComponentInParent<Camera>();
+        PlayerView = GameObject.Find("Eyes").GetComponent<Camera>();
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
