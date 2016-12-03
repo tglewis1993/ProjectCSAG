@@ -23,25 +23,24 @@ public class GameManager_TogglePause : MonoBehaviour {
     {
 
         Gmaster = GetComponent<GameManager_Master.GameManager_Master>();
-
     }
 
     void TogglePause()
     {
-        if(!bPaused)
-        {
-            Time.timeScale = 0;
-            bPaused = true;
-        }
-        else
+        if(bPaused)
         {
             Time.timeScale = 1;
             bPaused = false;
+        }
+        else
+        {
+            Time.timeScale = 0;
+            bPaused = true;
         }
 
     }
 
     GameManager_Master.GameManager_Master Gmaster;
 
-    bool bPaused;
+    bool bPaused = false;
 }

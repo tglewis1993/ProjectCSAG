@@ -75,6 +75,8 @@
     <Compile Include="Assets\DebugStuff\Debug_Scripts\ThrowThing.cs" />
     <Compile Include="Assets\DebugStuff\Debug_Scripts\UiText.cs" />
     <Compile Include="Assets\DebugStuff\Debug_Scripts\WeaponFire.cs" />
+    <Compile Include="Assets\Scripts\Manager Scripts\GameManager_References.cs" />
+    <Compile Include="Assets\Scripts\Manager Scripts\GameManager_ToggleCursor.cs" />
     <Compile Include="Assets\Scripts\Manager Scripts\GameManager_ToggleMenu.cs" />
     <Compile Include="Assets\Scripts\Manager Scripts\GameManager_TogglePause.cs" />
     <Compile Include="Assets\Scripts\Manager Scripts\GameManager_TogglePlayer.cs" />

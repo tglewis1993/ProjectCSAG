@@ -28,6 +28,8 @@ namespace GameManager_Master
             bInvUIOn = false;
             bGameOver = false;
 
+            Time.timeScale = 1;
+
         }
 	
 

@@ -14,11 +14,6 @@ public class DebugMenuNav : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(Debug_Quit)
-        {
-
-
-        }
 	}
 
     void Clicked()
