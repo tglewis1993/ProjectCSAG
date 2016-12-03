@@ -9,11 +9,13 @@ public class WeaponFire : MonoBehaviour {
         //Debug.Log("Reload Pressed: " + m_ReloadPressed);
         //Debug.Log("Reload Delay: " + canReload);
     }
-
+    
 	// Use this for initialization
 	void Start ()
     {
+
         PlayerView = GameObject.Find("Eyes").GetComponent<Camera>();
+        
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
@@ -35,20 +37,12 @@ public class WeaponFire : MonoBehaviour {
 
         bulletCount = magSize;
 
-        
-
     }
 	
 	// Update is called once per frame
 	void Update ()
-    {
-
-
-        //checkForFiring();
-
-        //printDebugInfo();
-        
-
+    { 
+       
 	}
 
     void positionUpdate()
@@ -89,9 +83,10 @@ public class WeaponFire : MonoBehaviour {
             {
                 canFire = fireDelay;
                 bulletCount--;
-
-
-
+                
+                GameObject bp = Instantiate(BeamProjectile, PlayerView.transform);
+                bp.transform.parent = null;
+                StartCoroutine(despawnProjectile(bp, 3.0f));
                 if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
                 {
                     //HIT DETECTED, use shotHitInfo to get information on the object hit. 
@@ -107,6 +102,13 @@ public class WeaponFire : MonoBehaviour {
 
         }
         checkForReload();
+
+    }
+
+    IEnumerator despawnProjectile(GameObject proj, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        Destroy(proj);
 
     }
 
@@ -141,7 +143,17 @@ public class WeaponFire : MonoBehaviour {
 
     }
 
+    void drawProj()
+    {
 
+
+
+    }
+
+
+
+
+    // ACCESSORS
     public int getBulletCount()
     {
         return bulletCount;
@@ -171,6 +183,11 @@ public class WeaponFire : MonoBehaviour {
     RaycastHit shotHitInfo;
     Vector3 playerPosition;
     Vector3 playerViewDir;
+
+    Vector3 bulletPlace;
+    Transform eyepos;
+
+    public GameObject BeamProjectile;
 
     float inacc;
     static float canFire;

@@ -26,7 +26,7 @@ public class ThrowThing : MonoBehaviour {
         if (Input.GetButtonUp("Fire2") && !Input.GetButton("Fire1")) // Will throw when right click is released and when fire isn't held.
 
         {
-            GameObject thing = (GameObject)Instantiate(thingPrefab, myTran.TransformPoint(-0.2f, 0, 0.5f), myTran.rotation);
+            GameObject thing = Instantiate(thingPrefab, myTran.TransformPoint(-0.2f, 0, 0.5f), myTran.rotation);
 
             thing.GetComponent<Rigidbody>().AddForce(myTran.forward * throwForce, ForceMode.Impulse);
 
