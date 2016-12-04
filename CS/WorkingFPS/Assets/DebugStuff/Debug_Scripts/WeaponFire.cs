@@ -15,7 +15,7 @@ public class WeaponFire : MonoBehaviour {
     {
 
         PlayerView = GameObject.Find("Eyes").GetComponent<Camera>();
-        
+        BarrelPos = GameObject.Find("Barrel_End").GetComponent<Transform>();
 
         playerPosition = Vector3.zero;
         playerViewDir = Vector3.zero;
@@ -84,19 +84,26 @@ public class WeaponFire : MonoBehaviour {
                 canFire = fireDelay;
                 bulletCount--;
                 
-                GameObject bp = Instantiate(BeamProjectile, PlayerView.transform);
+                GameObject bp = Instantiate(BeamProjectile, PlayerView.transform.position, PlayerView.transform.rotation);
                 bp.transform.parent = null;
-                StartCoroutine(despawnProjectile(bp, 3.0f));
+                spawnCo = despawnProjectile(bp, 3.0f);
+                StartCoroutine(spawnCo);
                 if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
                 {
                     //HIT DETECTED, use shotHitInfo to get information on the object hit. 
-                    beam.processBeam(true);
+                    //beam.processBeam(true);
+                    
+                    if(bp.transform.position == shotHitInfo.point )
+                    {
+                        StopCoroutine(spawnCo);
+                        Destroy(bp);
+                    }
                     Debug.DrawLine(bulletPath.origin, shotHitInfo.point, Color.red, 1);
                     Debug.Log(shotHitInfo.transform.tag);
                 }
                 else
                 {
-                    beam.processBeam(false);
+                    //beam.processBeam(false);
                 }
             }
 
@@ -143,16 +150,6 @@ public class WeaponFire : MonoBehaviour {
 
     }
 
-    void drawProj()
-    {
-
-
-
-    }
-
-
-
-
     // ACCESSORS
     public int getBulletCount()
     {
@@ -168,14 +165,21 @@ public class WeaponFire : MonoBehaviour {
     {
         return bulletPath;
     }
+
     public RaycastHit getHitInfo()
     {
         return shotHitInfo;
     }
 
+    public Transform getBarrel()
+    {
+        return BarrelPos;
+    }
     Camera PlayerView;
 
     public Beam_Effect beam;
+
+    private IEnumerator spawnCo;
 
     Ray bulletPath;
     bool m_mouseClick;
@@ -186,6 +190,8 @@ public class WeaponFire : MonoBehaviour {
 
     Vector3 bulletPlace;
     Transform eyepos;
+
+    Transform BarrelPos;
 
     public GameObject BeamProjectile;
 

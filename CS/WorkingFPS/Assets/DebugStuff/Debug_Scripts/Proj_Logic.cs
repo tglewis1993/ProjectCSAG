@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+[RequireComponent(typeof(WeaponFire))]
+[RequireComponent(typeof(ParticleSystem))]
 public class Proj_Logic : MonoBehaviour {
 
     public WeaponFire Weapon;
@@ -12,23 +15,28 @@ public class Proj_Logic : MonoBehaviour {
     private float distCovered;
     private float frac;
     private Transform pos;
+    private Transform barrel;
+    public ParticleSystem ps;
 
-    private void Start()
+    private void Awake()
     {
         Weapon = GameObject.Find("1stgun").GetComponent<WeaponFire>();
-
+        ps = GetComponentInChildren<ParticleSystem>();
         pos = transform;
         frac = 0;
         distCovered = 0;
+
         beam = Weapon.getRayPath();
         startTime = Time.time;
         shotLength = Vector3.Distance(beam.origin, beam.origin + (beam.direction * 50.0f));
 
+        
 
     }
 
     private void Update()
     {
+
         
         distCovered = (Time.time - startTime) * speed;
         frac = distCovered / shotLength;
