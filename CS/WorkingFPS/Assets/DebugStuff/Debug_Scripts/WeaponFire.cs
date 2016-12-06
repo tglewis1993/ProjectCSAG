@@ -29,7 +29,7 @@ public class WeaponFire : MonoBehaviour {
         canFire = 0;
         canReload = 0;
         inacc = 0.048833f;
-        fireDelay = 20.0f;
+        fireDelay = 750.0f;
         reloadDelay = 200.0f;
 
 
@@ -81,10 +81,10 @@ public class WeaponFire : MonoBehaviour {
         {
             if (canFire == 0 && bulletCount > 0) // Controls time between shots. The larger fire delay is the longer the time between shots.
             {
-                canFire = fireDelay;
+                canFire = fireDelay * Time.fixedDeltaTime; // Stop frames per second effecting fire rate
                 bulletCount--;
                 
-                GameObject bp = Instantiate(BeamProjectile, PlayerView.transform.position, PlayerView.transform.rotation);
+                GameObject bp = Instantiate(BeamProjectile, BarrelPos.position, BarrelPos.rotation);
                 bp.transform.parent = null;
                 spawnCo = despawnProjectile(bp, 3.0f);
                 StartCoroutine(spawnCo);

@@ -17,7 +17,7 @@ public class Proj_Logic : MonoBehaviour {
     private Transform pos;
     private Transform barrel;
     public ParticleSystem ps;
-
+    private Vector3 barrelFor;
     private void Awake()
     {
         Weapon = GameObject.Find("1stgun").GetComponent<WeaponFire>();
@@ -26,9 +26,11 @@ public class Proj_Logic : MonoBehaviour {
         frac = 0;
         distCovered = 0;
 
+        barrel = Weapon.getBarrel();
+
         beam = Weapon.getRayPath();
         startTime = Time.time;
-        shotLength = Vector3.Distance(beam.origin, beam.origin + (beam.direction * 50.0f));
+        shotLength = Vector3.Distance(barrel.position, barrel.position + (beam.direction * 50.0f));
 
         
 
@@ -41,7 +43,7 @@ public class Proj_Logic : MonoBehaviour {
         distCovered = (Time.time - startTime) * speed;
         frac = distCovered / shotLength;
 
-        pos.position = Vector3.Lerp(beam.origin, beam.origin + (beam.direction * 50.0f), frac);
+        pos.position = Vector3.Lerp(barrel.position, barrel.position + (beam.direction * 50.0f), frac);
 
     }
 
