@@ -18,8 +18,10 @@ public class Proj_Logic : MonoBehaviour {
     private Transform barrel;
     public ParticleSystem ps;
     private Vector3 barrelFor;
-    private void Awake()
+    private void Start()
     {
+        //pos.parent = null;
+
         Weapon = GameObject.Find("1stgun").GetComponent<WeaponFire>();
         ps = GetComponentInChildren<ParticleSystem>();
         pos = transform;
@@ -36,7 +38,7 @@ public class Proj_Logic : MonoBehaviour {
 
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
 
         

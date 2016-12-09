@@ -29,8 +29,8 @@ public class WeaponFire : MonoBehaviour {
         canFire = 0;
         canReload = 0;
         inacc = 0.048833f;
-        fireDelay = 750.0f;
-        reloadDelay = 200.0f;
+        fireDelay = 800.0f;
+        reloadDelay = 20000.0f;
 
 
         magSize = 30;
@@ -81,7 +81,7 @@ public class WeaponFire : MonoBehaviour {
         {
             if (canFire == 0 && bulletCount > 0) // Controls time between shots. The larger fire delay is the longer the time between shots.
             {
-                canFire = fireDelay * Time.fixedDeltaTime; // Stop frames per second effecting fire rate
+                canFire = fireDelay * Time.fixedDeltaTime;  // Stop frames per second effecting fire rate
                 bulletCount--;
                 
                 GameObject bp = Instantiate(BeamProjectile, BarrelPos.position, BarrelPos.rotation);
@@ -133,7 +133,7 @@ public class WeaponFire : MonoBehaviour {
 
                 m_ReloadPressed = Input.GetButtonDown("Reload");
                 if(m_ReloadPressed)
-                    canReload = reloadDelay;
+                    canReload = reloadDelay * Time.fixedDeltaTime;
             }
 
             if (m_ReloadPressed)

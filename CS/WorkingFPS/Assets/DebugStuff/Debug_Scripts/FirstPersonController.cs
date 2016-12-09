@@ -71,7 +71,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             playersWeapon.checkForFiring();
             playersGrenade.throwThing();
-            
+
+
         }
 
 
@@ -112,6 +113,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
                  m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
              }
              m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
+
+            
 
             m_MouseLook.UpdateCursorLock();
 
