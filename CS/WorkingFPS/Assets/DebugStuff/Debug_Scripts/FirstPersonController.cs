@@ -32,6 +32,17 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
 
+        [Range(0,1000)]
+        public float friction = 100.0f;
+        [Range(0, 1000)]
+        public float ground_accelerate = 800f;
+        [Range(0, 1000)]
+        public float air_accelerate = 10f;
+        [Range(0, 1000)]
+        public float max_velocity_ground = 800f;
+        [Range(0, 1000)]
+        public float max_velocity_air = 800f;
+
         // Use this for initialization
         private void Start()
         {
@@ -80,12 +91,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             float speed;
             GetInput(out speed);
-
+            // always move along the camera forward as it is the direction that it being aimed at
+            Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
             if (m_CharacterController.isGrounded)
             {
 
-                // always move along the camera forward as it is the direction that it being aimed at
-                Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
+                
 
                 // get a normal for the surface that is being touched to move along it
                 RaycastHit hitInfo;
@@ -93,10 +104,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
                                m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
-                m_MoveDir.x = desiredMove.x * speed;
-                m_MoveDir.z = desiredMove.z * speed;        
-
-
+                // m_MoveDir.x = desiredMove.x * speed;
+                // m_MoveDir.z = desiredMove.z * speed;        
+                
+                m_MoveDir = MoveGround(desiredMove, m_CharacterController.velocity);
             
            
                 m_MoveDir.y = -m_StickToGroundForce;
@@ -110,7 +121,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
              }
              else
              {
-                 m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
+                m_MoveDir = MoveAir(desiredMove, m_CharacterController.velocity);
+                m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
              }
              m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
@@ -168,6 +180,43 @@ namespace UnityStandardAssets.Characters.FirstPerson
             body.AddForceAtPosition(m_CharacterController.velocity * 0.1f, hit.point, ForceMode.Acceleration);
         }
 
-        
+        // accelDir: normalized direction that the player has requested to move (taking into account the movement keys and look direction)
+        // prevVelocity: The current velocity of the player, before any additional calculations
+        // accelerate: The server-defined player acceleration value
+        // max_velocity: The server-defined maximum player velocity (this is not strictly adhered to due to strafejumping)
+        private Vector3 Accelerate(Vector3 accelDir, Vector3 prevVelocity, float accelerate, float max_velocity)
+        {
+            float projVel = Vector3.Dot(prevVelocity, accelDir); // Vector projection of Current velocity onto accelDir.
+            float accelVel = accelerate * Time.fixedDeltaTime; // Accelerated velocity in direction of movment
+
+            // If necessary, truncate the accelerated velocity so the vector projection does not exceed max_velocity
+            if (projVel + accelVel > max_velocity)
+                accelVel = max_velocity - projVel;
+
+            return prevVelocity + accelDir * accelVel;
+        }
+
+        private Vector3 MoveGround(Vector3 accelDir, Vector3 prevVelocity)
+        {
+            // Apply Friction
+            float speed = prevVelocity.magnitude;
+            if (speed != 0) // To avoid divide by zero errors
+            {
+                float drop = speed * friction * Time.fixedDeltaTime;
+                prevVelocity *= Mathf.Max(speed - drop, 0) / speed; // Scale the velocity based on friction.
+            }
+
+            // ground_accelerate and max_velocity_ground are server-defined movement variables
+            return Accelerate(accelDir, prevVelocity, ground_accelerate, max_velocity_ground);
+        }
+
+        private Vector3 MoveAir(Vector3 accelDir, Vector3 prevVelocity)
+        {
+            // air_accelerate and max_velocity_air are server-defined movement variables
+            return Accelerate(accelDir, prevVelocity, air_accelerate, max_velocity_air);
+        }
+
+
     }
 }
+
