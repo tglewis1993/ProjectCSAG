@@ -20,12 +20,6 @@ public class ThrowThing : MonoBehaviour {
         player_cc = GameObject.Find("Debug_Character").GetComponent<CharacterController>(); // Grab CC for player velocity.
 
     }
-	
-	// Update is called once per frame
-	void Update () {
-
-            
-	}
 
     public void throwThing()
     {
@@ -33,8 +27,6 @@ public class ThrowThing : MonoBehaviour {
 
         {
             GameObject thing = Instantiate(thingPrefab, myTran.TransformPoint(-0.0f, 0, 0.4f), myTran.rotation);
-
-            Debug.Log(player_cc.velocity);
 
             thing.GetComponent<Rigidbody>().AddForce((myTran.forward + (player_cc.velocity * movementInfluenceFactor)) * throwForce, ForceMode.VelocityChange); //(myTran.forward + (player_cc.velocity*0.05f)
 

@@ -32,16 +32,19 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
 
-        [Range(0,1000)]
-        public float friction = 100.0f;
-        [Range(0, 1000)]
-        public float ground_accelerate = 800f;
-        [Range(0, 1000)]
-        public float air_accelerate = 10f;
-        [Range(0, 1000)]
-        public float max_velocity_ground = 800f;
-        [Range(0, 1000)]
-        public float max_velocity_air = 800f;
+        private float speedTrack;
+
+        [Header("Movement Variables: ")]
+        [SerializeField][Range(0,1000)]
+        float friction = 100.0f;
+        [SerializeField][Range(0, 1000)]
+        float ground_accelerate = 800f;
+        [SerializeField][Range(0, 1000)]
+        float air_accelerate = 10f;
+        [SerializeField][Range(0, 1000)]
+        float max_velocity_ground = 800f;
+        [SerializeField][Range(0, 1000)]
+        float max_velocity_air = 800f;
 
         // Use this for initialization
         private void Start()
@@ -61,7 +64,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void Update()
         {
 
-                RotateView();
+            GetInput(out speedTrack);
+
+            RotateView();
                 // the jump state needs to read here to make sure it is not missed
                 if (!m_Jump && m_CharacterController.isGrounded)
                 {
@@ -82,6 +87,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             playersWeapon.checkForFiring();
             playersGrenade.throwThing();
+            m_MouseLook.UpdateCursorLock();
 
 
         }
@@ -89,8 +95,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
-            float speed;
-            GetInput(out speed);
+
             // always move along the camera forward as it is the direction that it being aimed at
             Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
             if (m_CharacterController.isGrounded)
@@ -103,13 +108,12 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
                                m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+                       
+                if(m_CharacterController.isGrounded)
+                    m_MoveDir = MoveGround(desiredMove, m_CharacterController.velocity);
+                else
+                    m_MoveDir = MoveAir(desiredMove, m_CharacterController.velocity);
 
-                // m_MoveDir.x = desiredMove.x * speed;
-                // m_MoveDir.z = desiredMove.z * speed;        
-                
-                m_MoveDir = MoveGround(desiredMove, m_CharacterController.velocity);
-            
-           
                 m_MoveDir.y = -m_StickToGroundForce;
 
                 if (m_Jump)
@@ -125,10 +129,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
              }
              m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
-
-            
-
-            m_MouseLook.UpdateCursorLock();
 
         }
 
