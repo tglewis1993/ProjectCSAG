@@ -23,7 +23,7 @@ namespace GameManager_Master
         public bool bMenuOn;
 
         void Start () {
-            Application.targetFrameRate = 289;
+            Application.targetFrameRate = 999;
             bMenuOn = false;
             bInvUIOn = false;
             bGameOver = false;

@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 namespace UnityStandardAssets.Characters.FirstPerson
 {
     [RequireComponent(typeof (CharacterController))]
+    [RequireComponent(typeof(Camera))]
     public class FirstPersonController : MonoBehaviour
     {
         [SerializeField] private bool m_IsWalking;
@@ -20,7 +21,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         public WeaponFire playersWeapon;
         public ThrowThing playersGrenade;
 
-        private Camera m_Camera;
+        public Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
         private Vector2 m_Input;
@@ -36,15 +37,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         [Header("Movement Variables: ")]
         [SerializeField][Range(0,1000)]
-        float friction;
+        private float friction;
         [SerializeField][Range(0, 1000)]
-        float ground_accelerate;
+        private float ground_accelerate;
         [SerializeField][Range(0, 1000)]
-        float air_accelerate;
+        private float air_accelerate;
         [SerializeField][Range(0, 1000)]
-        float max_velocity_ground;
+        private float max_velocity_ground;
         [SerializeField][Range(0, 1000)]
-        float max_velocity_air;
+        private float max_velocity_air;
 
         // Use this for initialization
         private void Start()
@@ -52,7 +53,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 
             m_CharacterController = GetComponent<CharacterController>();
-            m_Camera = Camera.main;
             m_OriginalCameraPosition = m_Camera.transform.localPosition;
             m_Jumping = false;
 			m_MouseLook.Init(transform , m_Camera.transform);
@@ -97,14 +97,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
             //always move along the camera forward as it is the direction that it being aimed at
             Vector3 desiredMove = transform.forward * m_Input.y + transform.right * m_Input.x;
+            desiredMove = desiredMove.normalized;
             if (m_CharacterController.isGrounded)
             {
 
                 // get a normal for the surface that is being touched to move along it
-                RaycastHit hitInfo;
-                Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
-                               m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-                desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
+                //RaycastHit hitInfo;
+                //Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
+                              // m_CharacterController.height / 2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                //desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
 
                 m_MoveDir = MoveGround(desiredMove, m_CharacterController.velocity);
@@ -123,6 +124,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 m_MoveDir = MoveAir(desiredMove, m_CharacterController.velocity);
                 m_MoveDir += Physics.gravity * m_GravityMultiplier * Time.fixedDeltaTime;
             }
+
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir * Time.fixedDeltaTime);
 
         }
@@ -142,6 +144,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #endif
             // set the desired speed to be walking or running
             
+            
+
             m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:

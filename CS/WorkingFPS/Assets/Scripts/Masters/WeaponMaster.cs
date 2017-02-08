@@ -5,31 +5,35 @@ using UnityEngine;
 [RequireComponent(typeof(Mesh))]
 public class WeaponMaster : MonoBehaviour {
 
+    private PlayerMaster PM;
+
     public Mesh m_WeaponModel;
     private Vector3 m_ModelPosition;
 
-    private float m_FireRate;
-    private float m_CanFire;
+    protected float m_FireRate;
+    protected float m_CanFire;
 
-    private float m_MaxDamage;
-    private float m_MinimumDamage;
+    protected float m_MaxDamage;
+    protected float m_MinimumDamage;
 
-    private float m_ReloadTime;
-    private float m_CanReload;
+    protected float m_ReloadTime;
+    protected float m_CanReload;
 
-    private int m_MagSize;
-    private int m_RoundCount;
+    protected int m_MagSize;
+    protected int m_RoundCount;
 
-    private int m_Seed;
+    protected int m_Seed;
 
-    private double m_Inaccuracy;
+    protected double m_Inaccuracy;
 
-    private bool m_IsFiring;
-    private bool m_IsReloading;
+    protected bool m_IsFiring;
+    protected bool m_IsReloading;
 
     // Use this for initialization
-    void Start ()
+    private void OnEnable()
     {
+
+        PM = GetComponent<PlayerMaster>();
 
         SetWeaponStats();
         m_IsFiring = false;
@@ -38,26 +42,9 @@ public class WeaponMaster : MonoBehaviour {
         Random.InitState(m_Seed);
 
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void OnDisable()
     {
-
-        CheckInput();
-		
-	}
-
-    private void CheckInput()
-    {
-        if(Input.GetButton("Fire1") && !m_IsReloading)
-        {
-            m_IsFiring = true;
-        }
-
-        if (Input.GetButtonDown("Reload") && !m_IsFiring)
-        {
-            m_IsReloading = true;
-        }
 
     }
 

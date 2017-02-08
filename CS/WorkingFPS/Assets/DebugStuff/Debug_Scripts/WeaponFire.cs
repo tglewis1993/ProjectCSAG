@@ -21,6 +21,7 @@ public class WeaponFire : MonoBehaviour {
     private Vector3 bulletPlace;
     private Transform eyepos;
 
+    private Transform ParentRef;
     private Transform BarrelPos;
 
     public GameObject BeamProjectile;
@@ -46,6 +47,8 @@ public class WeaponFire : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+
+        ParentRef = transform.parent;
 
         PlayerCamera = GameObject.Find("Eyes").GetComponent<Camera>();
         BarrelPos = GameObject.Find("Barrel_End").GetComponent<Transform>();
@@ -99,15 +102,16 @@ public class WeaponFire : MonoBehaviour {
         canFire = fireDelay;
         bulletCount--;
 
-        GameObject bp = Instantiate(BeamProjectile, BarrelPos.position, BarrelPos.rotation);
+        GameObject bp = Instantiate(BeamProjectile, shotStart, shotRot);
         bp.transform.parent = null;
-        spawnCo = despawnProjectile(bp, 15.0f);
+        spawnCo = despawnProjectile(bp, 3.0f);
         StartCoroutine(spawnCo);
+        
         if (Physics.Raycast(bulletPath, out shotHitInfo)) // fire a ray using values obtained in updateRay. 
         {
             //HIT DETECTED, use shotHitInfo to get information on the object hit. 
             //beam.processBeam(true);
-
+            
             if (bp.transform.position == shotHitInfo.point)
             {
                 StopCoroutine(spawnCo);
